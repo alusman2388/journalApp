@@ -18,31 +18,31 @@ import com.usmanTech.journalApp.Entity.Users;
 import com.usmanTech.journalApp.Repository.UserRepository;
 
 //@SpringBootTest(classes = JournalApplication.class)
-//@Disabled
+@Disabled
 public class UserDetailsServiceImplTests {
-//	@InjectMocks
-//	private UserDetailsServiceImpl detailsServiceImpl;
-//	
-//	@Mock
-//	private UserRepository userRepository;
-//	
-//	@BeforeEach
-//	void setUp() {
-//		MockitoAnnotations.initMocks(this);
-//	}
-//	@Test
-//	void LoadByUser() {
-//		Users dbUser=new Users();
-//		dbUser.setUserName("Usman");
-//		dbUser.setPassword("JHJDHJFJDKJKD");
-//		dbUser.setRoles(Arrays.asList("USER"));
-//		
-//		
-//		when(userRepository.findByUserName(ArgumentMatchers.anyString())).thenReturn(dbUser);
-//		UserDetails user=detailsServiceImpl.loadUserByUsername("Usman");
-//		Assertions.assertNotNull(user);
-//
-//	}
+	@InjectMocks
+	private UserDetailsServiceImpl detailsServiceImpl;
+	
+	@Mock
+	private UserRepository userRepository;
+	
+	@BeforeEach
+	void setUp() {
+		MockitoAnnotations.initMocks(this);
+	}
+	@Test
+	void LoadByUser() {
+		Users dbUser=new Users();
+		dbUser.setUserName("Usman");
+		dbUser.setPassword("JHJDHJFJDKJKD");
+		dbUser.setRoles(Arrays.asList("USER"));
+		
+		
+		when(userRepository.findByUserName(ArgumentMatchers.anyString())).thenReturn(dbUser);
+		UserDetails user=detailsServiceImpl.loadUserByUsername("Usman");
+		Assertions.assertNotNull(user);
+
+	}
 	
 	
 	
