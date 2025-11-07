@@ -1,6 +1,7 @@
 package com.usmanTech.journalApp.Service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -15,12 +16,25 @@ public class WeatherService {
 	@Autowired
 	private RestTemplate restTemplate;
 	
+	@Autowired
+	private RedisService redisService;
+	
 	public WeatherResponse getWeather(String city) {
-		String finalAPI=API.replace("CITY", city).replace("API_KEY", apiKey);
-		/*after this we need to hit this api by code that can be done by
-		RestTemplete class this will process the http request and return a response */
-		ResponseEntity<WeatherResponse> response=restTemplate.exchange(finalAPI, HttpMethod.GET, null, WeatherResponse.class);
-		WeatherResponse body=response.getBody();
-		return body;
+		WeatherResponse weatherResponse=redisService.get("weather_of_"+city, WeatherResponse.class);
+		if(weatherResponse !=null) {
+			return weatherResponse;
+		}
+		else {
+			String finalAPI=API.replace("CITY", city).replace("API_KEY", apiKey);
+			/*after this we need to hit this api by code that can be done by
+			RestTemplete class this will process the http request and return a response */
+			ResponseEntity<WeatherResponse> response=restTemplate.exchange(finalAPI, HttpMethod.GET, null, WeatherResponse.class);
+			WeatherResponse body=response.getBody();
+			if(body !=null) {
+				redisService.set("weather_of_"+city, body, 300l);
+			}
+			return body;	
+		}
+		
 	}
 }

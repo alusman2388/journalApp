@@ -9,6 +9,9 @@ import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import com.fasterxml.jackson.databind.node.BooleanNode;
+
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
@@ -16,12 +19,15 @@ import lombok.NonNull;
 @Document(collection = "users")
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 public class Users {
 	@Id
 	private ObjectId id;
 	@Indexed(unique = true)
 	@NonNull
 	private String userName;
+	private String email;
+	private boolean sentimentAnalysis;
 	@NonNull
 	private String password;
 	@DBRef
